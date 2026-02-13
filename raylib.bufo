@@ -1,0 +1,130 @@
+module raylib {
+    @os(LINUX) config {
+        static: "libraylib.a",
+        dynamic: "raylib.lib",
+        libpath: "./raylib/lib",
+    }
+    @os(WINDOWS) config {
+        static: "raylib.lib",
+        dynamic: "raylib.dll",
+        libpath: "./raylib/lib",
+        static: "OpenGL32.lib",
+        static: "msvcrt.lib",
+        static: "Gdi32.lib",
+        static: "WinMM.lib",
+        static: "kernel32.lib",
+        static: "shell32.lib",
+        static: "User32.lib",
+        linker: "/NODEFAULTLIB:libcmt",
+    }
+    @extern("InitWindow") func InitWindow(width: i32, height: i32, title: &char);
+    @extern("CloseWindow") func CloseWindow();
+    @extern("InitAudioDevice") func InitAudioDevice();
+    @extern("CloseAudioDevice") func CloseAudioDevice();
+    @extern("WindowShouldClose") func WindowShouldClose() -> bool;
+    @extern("BeginDrawing") func BeginDrawing();
+    @extern("EndDrawing") func EndDrawing();
+    @extern("ClearBackground") func ClearBackground(c: Color);
+    @extern("DrawRectangleV") func DrawRectangleV(pos: Vector2, size: Vector2, col: Color);
+    @extern("ColorFromHSV") func ColorFromHSV(h: f32, s: f32, v: f32) -> Color;
+    @extern("GetColor") func GetColor(val: u32) -> Color;
+    @extern("LoadImageFromScreen") func LoadImageFromScreen() -> Image;
+    @extern("ExportImage") func ExportImage(i: Image, name: &char) -> bool;
+    @extern("PlaySound") func PlaySound(sound: Sound);
+    @extern("LoadSound") func LoadSound(filename: &char) -> Sound;
+    @extern("IsSoundValid") func IsSoundValid(sound: Sound) -> bool;
+    @extern("LoadWave") func LoadWave(fileName: &char) -> Wave;
+    @extern("LoadSoundFromWave") func LoadSoundFromWave(wave: Wave) -> Sound;
+    @extern("SetSoundVolume") func SetSoundVolume(sound: Sound, volume: f32);
+    @extern("GetTime") func GetTime() -> f64;
+    @extern("SetTargetFPS") func SetTargetFPS(fps: i32);
+    @extern("GetScreenWidth") func GetScreenWidth() -> i32;
+    @extern("GetScreenHeight") func GetScreenHeight() -> i32;
+    @extern("IsKeyPressed") func IsKeyPressed(key: i32) -> bool;
+    @extern("IsKeyDown") func IsKeyDown(key: i32) ->bool;
+    @extern("GetRandomValue") func GetRandomValue(min: i32, max: i32) ->i32 ;
+    @extern("DrawRectangleRec") func DrawRectangleRec(r: Rectangle, c: Color);
+    @extern("CheckCollisionRecs") func CheckCollisionRecs(r1: Rectangle, r2: Rectangle) -> bool;
+    @extern("LoadImage") func LoadImage(name: &char) -> Image;
+    @extern("UnloadImage") func UnloadImage(img: Image);
+    @extern("ImageRotateCCW") func ImageRotateCCW(image: &Image);
+    @extern("ImageResize") func ImageResize(image: &Image, w: i32, h:i32);
+    @extern("ImageDrawRectangleV") func ImageDrawRectangleV(dst: &Image, pos: Vector2, size: Vector2, c: Color);
+    @extern("LoadTextureFromImage") func LoadTextureFromImage(img: Image) -> Texture;
+    @extern("DrawTextureV") func DrawTextureV(tex: Texture, pos: Vector2, c: Color);
+    @extern("BeginMode2D") func BeginMode2D(cam: Camera2D);
+    @extern("EndMode2D") func EndMode2D();
+    @extern("BeginShaderMode") func BeginShaderMode(shader: Shader);
+    @extern("EndShaderMode") func EndShaderMode();
+    @extern("LoadShader") func LoadShader(path: &char) -> Shader;
+
+    struct Shader {
+        id: usize;
+        locs: &i32;
+    }
+
+    struct Texture {
+        id: usize;
+        width: i32;
+        height: i32;
+        mipmaps: i32;
+        format: i32;
+    }
+
+     struct Camera2D {
+         offset: Vector2;
+         target: Vector2;
+         rotation: f32;
+         zoom: f32;
+    }
+
+    struct Color {
+        r: u8;
+        g: u8;
+        b: u8;
+        a: u8;
+    }
+
+    struct Image {
+        data: Any;
+        width: i32;
+        height: i32;
+        mipmaps: i32;
+        format: i32;
+    }
+
+    struct AudioStream {
+        buffer: Any;
+        processor: Any;
+
+        sampleRate: u32;
+        sampleSize: u32;
+        channels: u32;
+    }
+
+    struct Sound {
+        stream: AudioStream;
+        frameCount: u32;
+    }
+
+    struct Wave {
+        frameCount: u32;
+        sampleRate: u32;
+        sampleSize: u32;
+        channels: u32;
+        data: Any;
+    }
+
+    struct Vector2 {
+        x: f32;
+        y: f32;
+    }
+
+    struct Rectangle {
+        x: f32;
+        y: f32;
+        width: f32;
+        height: f32;
+    }
+}
+
